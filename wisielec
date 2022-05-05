@@ -1,0 +1,111 @@
+import sys
+
+def start():
+    return
+
+a = 10
+b = 6
+c = 3
+
+word = "konwergencja"
+used_letters = []
+user_word = []
+
+###
+
+while True:
+    
+    game_level = input("Wybierz jeden z poziomów trudności:" + "\n" "1 - łatwy: " + str(a) + " szans" + "\n" "2 - średni: " + str(b) + " szans" + "\n" "3 - trudny: " + str(c) + " szanse" + "\n" "Wybierz poziom: ")
+
+    if  game_level == "1":
+        number_of_tries = a
+        print("Wybrano poziom: łatwy")
+        break
+        
+    elif game_level == "2":
+        number_of_tries = a
+        print("Wybrano poziom: średni")
+        break
+            
+    elif game_level == "3":
+        number_of_tries = c
+        print("Wybrano poziom: trudny")
+        break
+
+    else:
+        print("Wybrano nieprawidłową opcję. Spróbuj ponownie.")
+        continue
+
+###
+
+def find_indexes(word, letter):
+    indexes = []
+
+    for index, letter_in_word in enumerate(word):                                      # funkcja enumerate przypisuje dla każdej litery w słowie jej indeks, np.:
+        if letter == letter_in_word:
+            indexes.append(index)                                                                        #   a d r i a n
+                                                                                                         #   0 2 1 3 4 5
+    return indexes                                                                                       #   dla a będzie to 0 i 4
+
+###
+
+def show_state_of_game():
+    print()
+    print("".join(user_word))
+    #print(user_word)
+    print("Pozostało prób:", number_of_tries)
+    print("Użyte litery:", used_letters)
+    print()
+
+###
+
+def play_again():
+    while True:
+
+        final_choice = str(input("Czy chcesz zagrać ponownie? Wpisz tak/nie: "))
+        
+        if final_choice == "tak":
+            break
+        
+        elif final_choice == "nie":
+            print("Do zobaczenia!")
+            import sys
+            sys.exit(0)
+
+        else:
+            print("Wpisano błędną komendę.")
+            continue
+###
+
+start
+
+###
+
+for _ in word:                                              # jeśli w pętli nie używamy jakiejś zmiennej to zastępujemy ją znakiem podkreślnika"_"
+    user_word.append("_")
+
+while True:                                                 # pętla nieskończona - dopóki jej nie przerwiemy, to się nie zakończy
+    letter = input("Podaj literę: ")
+    used_letters.append(letter) 
+
+    found_indexes= find_indexes(word, letter)
+
+    if len(found_indexes) == 0:
+        print("Ta litera nie występuje w szukanym słowie.")
+        number_of_tries  -= 1                               # licznik pozostałych prób 
+
+        if number_of_tries == 0:
+            print("Koniec gry :(")
+            play_again()
+            
+                    
+    else:                                                   # nadpisywanie pustych miejsc odgatniętymi literami
+        for index in found_indexes:
+            user_word[index] = letter
+            #print("".join(user_word))
+        
+        if "".join(user_word) == word:                          # zamiana formatu wyświetlania odgadniętego słowa z szukanym słowem + porównywanie ich do siebie
+            print("Brawo! Szukane słowo to:", word)
+            play_again()     
+    
+    show_state_of_game()
